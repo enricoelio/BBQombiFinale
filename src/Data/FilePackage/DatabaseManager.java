@@ -13,7 +13,9 @@ public class DatabaseManager {
   public DatabaseManager() {
   }
 
-  private static final String databaseURL = new String("jdbc:postgresql://localhost/Elio");
+  private static final String databaseURL = new String("jdbc:postgresql://localhost/federico");
+  private static final String username = new String("");
+  private static final String pswd = new String("");
 
   
   // Metodi della classe DatabaseManager 
@@ -24,7 +26,7 @@ public class DatabaseManager {
   public int insertOrder(Order parameterOrder) throws SQLException {
 
     // Mi connetto al database
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
 
       // Faccio l'inserimento
       try (PreparedStatement pst = con.prepareStatement("INSERT INTO listaOrdini VALUES(?,?,?,?,?,?, DEFAULT)")) {
@@ -85,7 +87,7 @@ public class DatabaseManager {
   public int insertItem(Item parameterItem) throws SQLException {
 
     // Mi connetto al database
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
       
       // Faccio l'inserimento
       try (PreparedStatement pst = con.prepareStatement("INSERT INTO Item VALUES(?, ?, ?, ?)")) {
@@ -127,7 +129,7 @@ public class DatabaseManager {
   public List<String[]> viewOrderHistory() {
 
     // Mi connetto al database
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
 
       try (PreparedStatement pst = con.prepareStatement("SELECT * FROM listaOrdini ORDER BY ordercode")) {
         
@@ -187,7 +189,7 @@ public class DatabaseManager {
   public List<String[]> viewMovementHistory(int choice) {
 
 
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
 
 
       // Il parametro della scelta serve per capire se voglio vedere i movimenti di entrata o uscita dal magazzino. La scelta 1 sta per vedere quelli in uscita, mentre tutto il resto vale per i movimenti in entrata.
@@ -298,7 +300,7 @@ public class DatabaseManager {
 
   public int changeWarehouseSector(WarehouseItem wItem, int newSection) {
 
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
 
       try (PreparedStatement pst = con.prepareStatement("UPDATE warehouse SET itemwarehousesector = ? WHERE itemcode = ?")){
         
@@ -345,7 +347,7 @@ public class DatabaseManager {
     }
     */
     
-    try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost/Elio")) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
       
       try (PreparedStatement pst = con.prepareStatement("SELECT COUNT(*) FROM Warehouse WHERE itemType = ?")) {
         
@@ -411,7 +413,7 @@ public class DatabaseManager {
 
   public int insertRestock(Restock restockItems) {
     
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
 
       try (PreparedStatement pst = con.prepareStatement("INSERT INTO EntrataMagazzino VALUES (?,?,?,?)")) {
 
@@ -464,7 +466,7 @@ public class DatabaseManager {
       System.out.println(e.getMessage());
     }
     
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
       
       try (PreparedStatement pst = con.prepareStatement("SELECT * FROM UserList WHERE userCode = ?")) {
         
@@ -510,7 +512,7 @@ public class DatabaseManager {
 
   public int getLastOrderNumber() {
     
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
 
       try (PreparedStatement pst = con.prepareStatement("SELECT orderCode FROM listaOrdini ORDER BY orderCode DESC LIMIT 1")) {
         
@@ -550,7 +552,7 @@ public class DatabaseManager {
 
   public int insertWarehouseExit(Order madeOrder) {
 
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
       
       try (PreparedStatement pst = con.prepareStatement("INSERT INTO uscitaMagazzino VALUES (?,?,?,DEFAULT,?,?)")) {
 
@@ -598,7 +600,7 @@ public class DatabaseManager {
 
   public List<String[]> viewWarehouse() {
     
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
       
       try (PreparedStatement pst = con.prepareStatement("SELECT * FROM Warehouse ORDER BY itemcode")) {
         
@@ -646,7 +648,7 @@ public class DatabaseManager {
 
   public int removeFromWarehouse(List<ItemListComponent> itemList) {
 
-    try (Connection con = DriverManager.getConnection(databaseURL))  {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd))  {
       
       try (PreparedStatement pst = con.prepareStatement("DELETE FROM Warehouse WHERE ctid IN ( SELECT ctid FROM Warehouse WHERE itemtype = ? LIMIT ? )")) {
 
@@ -704,7 +706,7 @@ public class DatabaseManager {
 
   public List<String[]> viewOrderList() {
 
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
       
       try (PreparedStatement pst = con.prepareStatement("SELECT * FROM listaordini WHERE orderstatus = 1")) {
         
@@ -753,7 +755,7 @@ public class DatabaseManager {
 
   public int changeOrderStatus(Order orderList) {
 
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
       
       try (PreparedStatement pst = con.prepareStatement("UPDATE listaordini SET orderstatus = 2 WHERE ordercode = ?")) {
 
@@ -788,7 +790,7 @@ public class DatabaseManager {
 
   public int insertIntoWarehouse(List<RestockItem> restockItems) {
 
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
       
       try (PreparedStatement pst = con.prepareStatement("INSERT INTO Warehouse VALUES (?,?,?,DEFAULT,?)")) {
 
@@ -843,7 +845,7 @@ public class DatabaseManager {
 
   public String getLastWarehouseNumber() {
 
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
       
       try (PreparedStatement pst = con.prepareStatement("SELECT itemcode FROM Warehouse ORDER BY itemcode DESC LIMIT 1")) {
         
@@ -880,7 +882,7 @@ public class DatabaseManager {
 
   public int getLastEntryNumber() {
 
-    try (Connection con = DriverManager.getConnection(databaseURL)) {
+    try (Connection con = DriverManager.getConnection(databaseURL, username, pswd)) {
 
       try (PreparedStatement pst = con.prepareStatement("SELECT restockcode FROM EntrataMagazzino ORDER BY restockcode DESC LIMIT 1")) {
 
@@ -911,11 +913,6 @@ public class DatabaseManager {
     }
 
   }
-
-
-
-  // 18 - Ritorna il codice dell'ultima uscita dal magazzino.
-
 
 }
 
