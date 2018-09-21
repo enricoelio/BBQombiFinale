@@ -14,8 +14,8 @@ public class DatabaseManager {
   }
 
   private static final String databaseURL = new String("jdbc:postgresql://localhost/federico");
-  private static final String username = new String("");
-  private static final String pswd = new String("");
+  private static final String username = new String("pandflame");
+  private static final String pswd = new String("Pandflame1234");
 
   
   // Metodi della classe DatabaseManager 
